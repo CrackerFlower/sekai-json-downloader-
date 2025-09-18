@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chart JSON Downloader</title>
+</head>
+<body>
+  <h2>Download Project Sekai Chart JSON</h2>
+  <p>Paste a chart link from sekai.best or sekai-viewer:</p>
+  <input type="text" id="url" placeholder="https://...json" size="60">
+  <button onclick="downloadJSON()">Download JSON</button>
+
+  <script>
+    async function downloadJSON() {
+      const url = document.getElementById('url').value;
+      if (!url) {
+        alert("Please paste a URL first!");
+        return;
+      }
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("HTTP " + response.status);
+
+        const blob = await response.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "chart.json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
